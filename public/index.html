@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Node.js LAN File Sharing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="icon" type="image/png" href="/icons/icon.png" sizes="32x32">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#006900">
+
+  <!-- <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+
+</head>
+<body>
+
+  <div class="container">
+    <div class="row">
+      <div class="column">
+        <h1 class="text-center">Share Files</h1>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+
+        <form ref='uploadForm' id='uploadForm' action="" method="post" enctype="multipart/form-data">
+          <div id="fileToUploadButtonBox">
+            <div id="fileToUploadButton" class="btn btn-primary">
+              <span class="button-text">Choose File</span>
+              <input type="file" name="fileToUpload" id="fileToUpload" multiple webkitdirectory>
+            </div>
+          </div>
+        </form>
+
+        <br>
+
+<!--         <div id="successPanel" class="panel panel-success hidden">
+          <div class="panel-body text-center">
+            <p class="text-success" style="margin:0;">File uploaded as "<span id="fileSuccessName"></span>"</p>
+          </div>
+        </div> -->
+
+        <div id="errorPanel" class="panel panel-danger hidden">
+          <div class="panel-body text-center">
+            <p class="text-danger" style="margin:0;">File upload failed.</p>
+          </div>
+        </div>
+
+        <br>
+
+        <div id="fileList">
+          <list-item
+            v-for="content in rootContentObject.contents"
+            :key="content.path"
+            :content="content"
+            :deletion="allowDeletion"
+          />
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div id="successoverlay">
+    <span class="title noselect" id="progressMessage">...</span>
+  </div>
+
+  <script src="vue/vue.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
