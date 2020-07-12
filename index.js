@@ -166,7 +166,7 @@ class LiveCache {
                     "folder": true,
                     "path": pathStr,
                     "contents": {},
-                    // TODO(baris): Double check if valid for folders
+
                     "timestamp": Math.max(...[stats.ctimeMs, stats.mtimeMs].filter(x => (x != null)))
                 };
             }
@@ -263,7 +263,7 @@ class LiveCache {
             if (content.folder) {
                 return this._getContentRecursive(contentName, content);
             } else {
-                /** @type {FileContent} */
+
                 const fileContent = {
                     "folder": false,
                     "name": contentName,
@@ -287,7 +287,7 @@ class LiveCache {
             "name": baseFolderName,
             "path": baseFolderContent.path,
             "contents": contents,
-            // TODO(baris): Calculate timestamp from contents?
+
             "timestamp": baseFolderContent.timestamp,
         }
     }
@@ -301,7 +301,7 @@ class LiveCache {
 
     prepContentOutput() {
         return this.contentPrepPromise.then(() => {
-            // NOTE(baris): In class instance cache hit, independent of browser state.
+
             if(this.contentOutputMD5 == null) {
                 this._contentOutputJSON = this._getContentRecursive(null, this.rootContent);
                 this.contentOutputMD5 = crypto.createHash('md5').update(JSON.stringify(this._contentOutputJSON)).digest("hex")
@@ -326,12 +326,12 @@ function normalizePort(val) {
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
-        // named pipe
+
         return val;
     }
 
     if (port >= 0) {
-        // port number
+
         return port;
     }
 
@@ -344,7 +344,7 @@ function getAddresses() {
     for (const k in interfaces) {
         for (const k2 in interfaces[k]) {
             let address = interfaces[k][k2];
-            // NOTE: Only handling IPv4 at the moment.
+
             if (address.family === 'IPv4' && !address.internal) {
                 addresses.push(address.address);
             }
@@ -373,7 +373,7 @@ function getAddressesWQRCodes(publicPath, port) {
     return Promise.all(addresses.map((address) => {
         const imagePath = path.join(publicPath, `./qr_codes/${address}_${port}.png`);
         return generateQRCodeIfNotExists(imagePath, address, port).catch(() => {
-            // NOTE(baris): Ignoring errors here.
+
         });
     })).then(() => addresses);
 }
