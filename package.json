@@ -1,0 +1,26 @@
+{
+  "name": "files-sharing-system",
+  "version": "1.0.0",
+  "description": "Share files over local area network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnshulAngaria/Files-Sharing-System.git"
+  },
+  "author": "Anshul Angaria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnshulAngaria/Files-Sharing-System/issues"
+  },
+  "homepage": "https://github.com/AnshulAngaria/Files-Sharing-System#readme",
+  "dependencies": {
+    "chokidar": "^3.4.0",
+    "express": "^4.17.1",
+    "formidable": "^1.2.2",
+    "qr-image": "^3.2.0",
+    "vue": "^2.6.11"
+  }
+}
