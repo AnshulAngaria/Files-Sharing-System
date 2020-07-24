@@ -13,81 +13,81 @@ const chokidar = require('chokidar');
 
 
 
-function recursiveReaddir(targetPath, basePath, name = null, orderByTime = false) {
-    return readdirPromise(targetPath).then((contentNames) => {
-        return Promise.all(contentNames.map((fileOrDirName) => {
-            let fileOrDirPath = path.join(targetPath, fileOrDirName);
-            return lstatPromise(fileOrDirPath).then(
-                /** @returns {Content|Promise<Content>} */
-                (stats) => {
-                if (stats.isDirectory()) {
-                    return recursiveReaddir(fileOrDirPath, basePath, fileOrDirName);
-                } else if (stats.isFile()) {
-                    /** @type {FileContent} */
-                    const fileContent = {
-                        "folder": false,
-                        "name": fileOrDirName,
-                        "path": path.relative(basePath, fileOrDirPath),
-                        "timestamp": Math.max(...[stats.ctimeMs, stats.mtimeMs].filter(x => (x != null)))
-                    };
-                    return fileContent;
-                } else {
-                    // NOTE(baris): Only handling file and folders
-                    return null;
-                }
-            });
-        }));
-    }).then((contentObjects) => {
-        if (contentObjects.length == 0 && targetPath != basePath) { // Ignoring empty (sub)folders
-            return null;
-        } else {
-            let timestamp = null;
-            if (contentObjects.length > 0) {
-                contentObjects = contentObjects.filter(obj => (obj != null));
-                if (orderByTime) {
-                    contentObjects = contentObjects.sort((a, b) => {
-                        if (a.timestamp == null) return 1;
-                        if (b.timestamp == null) return -1;
-                        return b.timestamp - a.timestamp;
-                    });
-                    timestamp = contentObjects[0].timestamp;
-                } else {
-                    timestamp = contentObjects.map((x) => x.timestamp).filter(x => (x != null)).sort((a, b) => b - a)[0];
-                }
-            }
-            return {
-                "folder": true,
-                "name": name,
-                "path": path.relative(basePath, targetPath),
-                "contents": contentObjects,
-                "timestamp": timestamp
-            }
-        }
-    })
-}
-
-
-function readdirPromise(targetPath) {
-    return new Promise((resolve) => {
-        fs.readdir(targetPath, (err, contentNames) => {
-            if (contentNames == null) {
-                resolve([]);
-            } else {
-
-                resolve(contentNames.filter((contentName) => contentName[0] != '.'));
-            }
-        })
-    });
-}
-
-
-function lstatPromise(targetPath) {
-    return new Promise((resolve) => {
-        fs.lstat(targetPath, (err, stats) => {
-            resolve(stats);
-        });
-    });
-}
+// function recursiveReaddir(targetPath, basePath, name = null, orderByTime = false) {
+//     return readdirPromise(targetPath).then((contentNames) => {
+//         return Promise.all(contentNames.map((fileOrDirName) => {
+//             let fileOrDirPath = path.join(targetPath, fileOrDirName);
+//             return lstatPromise(fileOrDirPath).then(
+//                 /** @returns {Content|Promise<Content>} */
+//                 (stats) => {
+//                 if (stats.isDirectory()) {
+//                     return recursiveReaddir(fileOrDirPath, basePath, fileOrDirName);
+//                 } else if (stats.isFile()) {
+//                     /** @type {FileContent} */
+//                     const fileContent = {
+//                         "folder": false,
+//                         "name": fileOrDirName,
+//                         "path": path.relative(basePath, fileOrDirPath),
+//                         "timestamp": Math.max(...[stats.ctimeMs, stats.mtimeMs].filter(x => (x != null)))
+//                     };
+//                     return fileContent;
+//                 } else {
+//                     // NOTE(baris): Only handling file and folders
+//                     return null;
+//                 }
+//             });
+//         }));
+//     }).then((contentObjects) => {
+//         if (contentObjects.length == 0 && targetPath != basePath) { // Ignoring empty (sub)folders
+//             return null;
+//         } else {
+//             let timestamp = null;
+//             if (contentObjects.length > 0) {
+//                 contentObjects = contentObjects.filter(obj => (obj != null));
+//                 if (orderByTime) {
+//                     contentObjects = contentObjects.sort((a, b) => {
+//                         if (a.timestamp == null) return 1;
+//                         if (b.timestamp == null) return -1;
+//                         return b.timestamp - a.timestamp;
+//                     });
+//                     timestamp = contentObjects[0].timestamp;
+//                 } else {
+//                     timestamp = contentObjects.map((x) => x.timestamp).filter(x => (x != null)).sort((a, b) => b - a)[0];
+//                 }
+//             }
+//             return {
+//                 "folder": true,
+//                 "name": name,
+//                 "path": path.relative(basePath, targetPath),
+//                 "contents": contentObjects,
+//                 "timestamp": timestamp
+//             }
+//         }
+//     })
+// }
+//
+//
+// function readdirPromise(targetPath) {
+//     return new Promise((resolve) => {
+//         fs.readdir(targetPath, (err, contentNames) => {
+//             if (contentNames == null) {
+//                 resolve([]);
+//             } else {
+//
+//                 resolve(contentNames.filter((contentName) => contentName[0] != '.'));
+//             }
+//         })
+//     });
+// }
+//
+//
+// function lstatPromise(targetPath) {
+//     return new Promise((resolve) => {
+//         fs.lstat(targetPath, (err, stats) => {
+//             resolve(stats);
+//         });
+//     });
+// }
 
 
 
